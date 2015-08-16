@@ -1,11 +1,13 @@
 #include <cstdio>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include "GameObject.h"
+#include <memory>
 
 int main(int argc, char **argv)
 {
 	ALLEGRO_DISPLAY* display = nullptr;
-	ALLEGRO_BITMAP* testImage = nullptr;
+	std::shared_ptr<ALLEGRO_BITMAP*> testImage;
 	ALLEGRO_EVENT_QUEUE* events = nullptr;
 	ALLEGRO_MOUSE_EVENT mouseEvent;
 	ALLEGRO_EVENT_SOURCE* mouseEventSource = nullptr;
@@ -27,7 +29,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	testImage = al_load_bitmap("Images/test.bmp");
+	testImage = std::make_shared<ALLEGRO_BITMAP*>(al_load_bitmap("Images/test.bmp"));
 	if (testImage == nullptr) {
 		fprintf(stderr, "failed to load image\n");
 		return EXIT_FAILURE;
@@ -44,7 +46,7 @@ int main(int argc, char **argv)
 	if (al_install_mouse()) {
 		mouseEventSource = al_get_mouse_event_source();
 		al_register_event_source(events, mouseEventSource);
-		while (true)
+		for (int i = 0; i < 10000000;i++)
 		{
 			while (!al_is_event_queue_empty(events))
 			{	
@@ -56,7 +58,7 @@ int main(int argc, char **argv)
 					if (mouseEvent.button & 1)
 					{
 						printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
-						al_draw_bitmap(testImage, mouseEvent.x, mouseEvent.y, 0);
+						al_draw_bitmap(*testImage.get(), mouseEvent.x, mouseEvent.y, 0);
 						al_flip_display();
 					}
 				}
@@ -69,6 +71,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "no mouse found!\n");
 		return EXIT_FAILURE;
 	}
+
 
 	al_rest(5);
 	al_destroy_display(display);
