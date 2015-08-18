@@ -133,7 +133,9 @@
   <ItemGroup>
     <ClCompile Include="GameObjectTypes\GameObject.cpp" />
     <ClCompile Include="GameObjectTypes\Ship.cpp" />
+    <ClCompile Include="GameObjectTypes\Test.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SpriteUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp" />
@@ -141,6 +143,8 @@
   <ItemGroup>
     <ClInclude Include="GameObjectTypes\GameObject.h" />
     <ClInclude Include="GameObjectTypes\Ship.h" />
+    <ClInclude Include="GameObjectTypes\Test.h" />
+    <ClInclude Include="SpriteUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

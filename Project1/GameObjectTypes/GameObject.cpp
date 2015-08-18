@@ -1,13 +1,8 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
-{
-	m_sprite = std::make_shared<ALLEGRO_BITMAP*>(al_load_bitmap("Images/test.bmp"));
-}
-
 GameObject::GameObject(const char* filename,float x, float y, float rotation)
 {
-	m_sprite = std::make_shared<ALLEGRO_BITMAP*>(al_load_bitmap(filename));
+	m_sprite = Utils::getSprite(filename);
 	m_x = x;
 	m_y = y;
 	m_rotation = rotation;

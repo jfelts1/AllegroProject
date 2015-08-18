@@ -6,17 +6,12 @@
 #include <memory>
 #include <map>
 #include <string>
-
-/*std::map<std::string, ALLEGRO_BITMAP*> spriteMap{
-	{"Test",al_load_bitmap("Images/test.bmp")},
-};*/
-
+#include "../SpriteUtils.h"
 
 class GameObject
 {
 public:
-	GameObject();
-	GameObject(const char* filename,float x = 0, float y = 0, float rotation = 0);
+	GameObject(const char* filename = "Images/test.bmp",float x = 0, float y = 0, float rotation = 0);
 	//copy constructor
 	GameObject(const GameObject& orig);
 	//copy assignment
@@ -48,8 +43,9 @@ public:
 	//in radians
 	float getRotation()const { return m_rotation; }
 	virtual void update() const = 0;
-private:
-	std::shared_ptr<ALLEGRO_BITMAP*> m_sprite;
+	virtual void render() const = 0;
+protected:
+	ALLEGRO_BITMAP* m_sprite;
 	float m_x = 0;
 	float m_y = 0;
 	//in radians
