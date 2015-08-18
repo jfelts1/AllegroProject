@@ -73,7 +73,8 @@ int main(int argc, char **argv)
 					if (mouseEvent.button & 1)
 					{
 						printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
-						test.push_back(std::make_shared<Test>((float)mouseEvent.x, (float)mouseEvent.y,0));
+						auto tmp = std::make_shared<Test>((float)mouseEvent.x, (float)mouseEvent.y, 0);
+						test.push_back(tmp);
 					}
 				}
 				if (ty == ALLEGRO_EVENT_KEY_DOWN)
