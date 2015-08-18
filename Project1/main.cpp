@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
-#include "GameObject.h"
+#include "GameObjectTypes/GameObject.h"
 #include <memory>
 
 int main(int argc, char **argv)
@@ -64,15 +64,13 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-		
-		
 	}
 	else {
 		fprintf(stderr, "no mouse found!\n");
 		return EXIT_FAILURE;
 	}
 
-
+	al_flip_display();
 	al_rest(5);
 	al_destroy_display(display);
 

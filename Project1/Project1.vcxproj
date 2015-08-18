@@ -131,16 +131,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectTypes\GameObject.cpp" />
+    <ClCompile Include="GameObjectTypes\Ship.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Ship.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Ship.h" />
+    <ClInclude Include="GameObjectTypes\GameObject.h" />
+    <ClInclude Include="GameObjectTypes\Ship.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
