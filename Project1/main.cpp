@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 	}
 	else 
 	{
-		fprintf(stderr, "no mouse found or keyboard!\n");
+		fprintf(stderr, "no mouse or keyboard found!\n");
 		return EXIT_FAILURE;
 	}
 

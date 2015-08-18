@@ -1,6 +1,7 @@
 #ifndef SPRITEUTILS_H
 #define SPRITEUTILS_H
 #pragma once
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <map>

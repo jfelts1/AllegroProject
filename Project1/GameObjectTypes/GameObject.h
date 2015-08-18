@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 #pragma once
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <memory>
