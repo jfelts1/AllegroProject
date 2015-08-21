@@ -9,11 +9,15 @@
 #include <string>
 #include "../SpriteUtils.h"
 #include "../Point.h"
+#include <cmath>
+#include <cstdlib>
+#define PI 3.1415926535897932384626433832795
 
 class GameObject
 {
 public:
 	GameObject(float x = 0, float y = 0, float rotation = 0,const char* filename = "Images/test.bmp");
+	GameObject(Point p, float rotation = 0, const char* filename = "Images/test.bmp");
 	//copy constructor
 	GameObject(const GameObject& orig);
 	//copy assignment
@@ -48,8 +52,9 @@ public:
 	virtual void render() const = 0;
 protected:
 	ALLEGRO_BITMAP* m_sprite;
+	//the ship's position relative to the gameworld origin
 	Point pos;
-	//in radians
+	//the ship's rotation in radians
 	float m_rotation = 0;
 };
 #endif

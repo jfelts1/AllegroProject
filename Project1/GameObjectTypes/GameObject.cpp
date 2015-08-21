@@ -8,6 +8,13 @@ GameObject::GameObject(float x, float y, float rotation,const char* filename)
 	m_rotation = rotation;
 }
 
+GameObject::GameObject(Point p, float rotation, const char * filename)
+{
+	m_sprite = Utils::getSprite(filename);
+	pos = p;
+	m_rotation = rotation;
+}
+
 //copy constructor
 GameObject::GameObject(const GameObject & orig)
 {

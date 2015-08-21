@@ -2,6 +2,8 @@
 #define POINT_T
 #pragma once
 
+#include <allegro5/allegro.h>
+
 struct Point
 {
 	Point(float x = 0, float y = 0) 
@@ -59,6 +61,12 @@ struct Point
 		x = val;
 		y = val;
 		return *this;
+	}
+
+	void getCurMousePos(ALLEGRO_MOUSE_EVENT mouse)
+	{
+		x = mouse.x;
+		y = mouse.y;
 	}
 
 	float x = 0;

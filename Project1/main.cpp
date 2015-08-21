@@ -5,16 +5,22 @@
 #include "GameObjectTypes/GameObject.h"
 #include "GameObjectTypes/Test.h"
 #include "GameObjectTypes/Ship.h"
+#include "Point.h"
 #include <memory>
 #include <vector>
 #include <chrono>
 #include <thread>
 #define MS_PER_TICK 16
+#define SCREEN_SIZE_X 640
+#define SCREEN_SIZE_Y 480
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
 using std::chrono::duration;
 using std::chrono::duration_cast;
+using std::vector;
+using std::shared_ptr;
+using std::make_shared;
 
 int main(int argc, char **argv)
 {
@@ -25,6 +31,8 @@ int main(int argc, char **argv)
 	ALLEGRO_EVENT_SOURCE* keyboardEventSource = nullptr;
 	ALLEGRO_EVENT event;
 	ALLEGRO_KEYBOARD_EVENT keyboardEvent;
+	vector<shared_ptr<GameObject>> GameObjects;
+	Point mouseCurPos;
 
 	if (!al_init()) 
 	{
@@ -32,7 +40,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	display = al_create_display(640, 480);
+	display = al_create_display(SCREEN_SIZE_X,SCREEN_SIZE_Y);
 	if (display == nullptr) 
 	{
 		fprintf(stderr, "failed to create display!\n");
@@ -59,7 +67,6 @@ int main(int argc, char **argv)
 	}
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	std::vector<std::shared_ptr<GameObject>> test;
 
 	if (al_install_mouse() && al_install_keyboard()) 
 	{
@@ -67,12 +74,16 @@ int main(int argc, char **argv)
 		keyboardEventSource = al_get_keyboard_event_source();
 		al_register_event_source(events, mouseEventSource);
 		al_register_event_source(events, keyboardEventSource);
+		GameObjects.push_back(make_shared<Ship>(SCREEN_SIZE_X/2,SCREEN_SIZE_Y/2));
+		shared_ptr<GameObject> tmp = GameObjects[0];
+		shared_ptr<Ship> player = std::static_pointer_cast<Ship>(tmp);
 		bool quit = false;
 		//main game loop
-
 		while(!quit)
 		{
 			auto startTime = high_resolution_clock::now();
+			al_clear_to_color(al_map_rgb(0, 0, 0));
+			//get user input
 			while (!al_is_event_queue_empty(events))
 			{	
 				al_get_next_event(events, &event);
@@ -88,6 +99,8 @@ int main(int argc, char **argv)
 				if (ty == ALLEGRO_EVENT_MOUSE_AXES)
 				{
 					mouseEvent = event.mouse;
+					mouseCurPos.getCurMousePos(mouseEvent);
+					player->setRotationTarget(mouseCurPos);
 					printf("mouse at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
 				}
 				if (ty == ALLEGRO_EVENT_KEY_DOWN)
@@ -99,8 +112,16 @@ int main(int argc, char **argv)
 					}
 				}
 			}
+
+			for (auto spritesToRend : GameObjects)
+			{
+				spritesToRend->update();
+				spritesToRend->render();
+				al_flip_display();
+			}
 			auto endTime = high_resolution_clock::now();
 			auto gameTickTime = duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+			//printf("Time elapsed: %lldms   Waiting for: %lldms\n", gameTickTime, MS_PER_TICK - gameTickTime);
 			std::this_thread::sleep_for(std::chrono::milliseconds(MS_PER_TICK - gameTickTime));
 		}
 	}
@@ -110,15 +131,8 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	for (auto spritesToRend : test)
-	{
-		spritesToRend->update();
-		spritesToRend->render();
-		al_flip_display();
-	}
-
 	al_flip_display();
-	al_rest(5);
+	al_rest(1);
 	al_destroy_display(display);
 
 	al_destroy_event_queue(events);
