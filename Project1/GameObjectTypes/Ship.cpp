@@ -31,9 +31,9 @@ void Ship::setRotationTarget(Point p)
 void Ship::update()
 {
 	float angle = atan2f(pos.y - m_mousePos.y, pos.x - m_mousePos.x)- PI/2;
-	trans1 = orig1;
-	trans2 = orig2;
-	trans3 = orig3;
+	al_copy_transform(&trans1, &orig1);
+	al_copy_transform(&trans2, &orig2);
+	al_copy_transform(&trans3, &orig3);
 	al_rotate_transform(&trans1, angle);
 	al_rotate_transform(&trans2, angle);
 	al_rotate_transform(&trans3, angle);
