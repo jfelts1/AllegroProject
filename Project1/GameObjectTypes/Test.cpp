@@ -1,6 +1,6 @@
 #include "Test.h"
 
-Test::Test(float x, float y, float rotation) : GameObject("Images/test.bmp",x,y,rotation)
+Test::Test(float x, float y, float rotation) : GameObject(x,y,rotation, "Images/test.bmp")
 {
 }
 
@@ -12,11 +12,11 @@ Test::Test(const Test & orig) : GameObject(orig)
 {
 }
 
-void Test::update() const
+void Test::update()
 {
 }
 
 void Test::render() const
 {
-	al_draw_bitmap(m_sprite, m_x, m_y, 0);
+	al_draw_bitmap(m_sprite, pos.x, pos.y, 0);
 }

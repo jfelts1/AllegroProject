@@ -144,6 +144,7 @@
     <ClInclude Include="GameObjectTypes\GameObject.h" />
     <ClInclude Include="GameObjectTypes\Ship.h" />
     <ClInclude Include="GameObjectTypes\Test.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="SpriteUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,10 +1,10 @@
 #include "GameObject.h"
 
-GameObject::GameObject(const char* filename,float x, float y, float rotation)
+GameObject::GameObject(float x, float y, float rotation,const char* filename)
 {
 	m_sprite = Utils::getSprite(filename);
-	m_x = x;
-	m_y = y;
+	pos.x = x;
+	pos.y = y;
 	m_rotation = rotation;
 }
 
@@ -12,8 +12,8 @@ GameObject::GameObject(const char* filename,float x, float y, float rotation)
 GameObject::GameObject(const GameObject & orig)
 {
 	m_sprite = orig.m_sprite;
-	m_x = orig.m_x;
-	m_y = orig.m_y;
+	pos.x = orig.pos.x;
+	pos.y = orig.pos.y;
 	m_rotation = orig.m_rotation;
 }
 
@@ -23,8 +23,8 @@ GameObject & GameObject::operator=(const GameObject & orig)
 	if (&orig != this)
 	{
 		m_sprite = orig.m_sprite;
-		m_x = orig.m_x;
-		m_y = orig.m_y;
+		pos.x = orig.pos.x;
+		pos.y = orig.pos.y;
 		m_rotation = orig.m_rotation;
 	}
 	return *this;

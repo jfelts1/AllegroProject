@@ -8,21 +8,22 @@
 #include <map>
 #include <string>
 #include "../SpriteUtils.h"
+#include "../Point.h"
 
 class GameObject
 {
 public:
-	GameObject(const char* filename = "Images/test.bmp",float x = 0, float y = 0, float rotation = 0);
+	GameObject(float x = 0, float y = 0, float rotation = 0,const char* filename = "Images/test.bmp");
 	//copy constructor
 	GameObject(const GameObject& orig);
 	//copy assignment
 	virtual GameObject& operator=(const GameObject& orig);
 	//move constructor
-	GameObject(GameObject && orig)noexcept : m_sprite(orig.m_sprite), m_x(orig.m_x), m_y(orig.m_y), m_rotation(orig.m_rotation)
+	GameObject(GameObject && orig)noexcept : m_sprite(orig.m_sprite), pos(orig.pos), m_rotation(orig.m_rotation)
 	{
 		orig.m_sprite=nullptr;
-		orig.m_x = -1;
-		orig.m_y = -1;
+		orig.pos.x = -1;
+		orig.pos.y = -1;
 		orig.m_rotation = 0;
 	}
 	//move assignment
@@ -31,24 +32,23 @@ public:
 		if (&orig != this)
 		{
 			m_sprite = std::move(orig.m_sprite);
-			m_x = orig.m_x;
-			m_y = orig.m_y;
+			pos.x = orig.pos.x;
+			pos.y = orig.pos.y;
 			m_rotation = orig.m_rotation;
 		}
 		return *this;
 	}
 
 	virtual ~GameObject();
-	float getX()const { return m_x; }
-	float getY()const { return m_y; }
+	float getX()const { return pos.x; }
+	float getY()const { return pos.y; }
 	//in radians
 	float getRotation()const { return m_rotation; }
-	virtual void update() const = 0;
+	virtual void update() = 0;
 	virtual void render() const = 0;
 protected:
 	ALLEGRO_BITMAP* m_sprite;
-	float m_x = 0;
-	float m_y = 0;
+	Point pos;
 	//in radians
 	float m_rotation = 0;
 };

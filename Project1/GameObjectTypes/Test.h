@@ -17,7 +17,7 @@ public:
 	
 
 	// Inherited via GameObject
-	virtual void update() const override;
+	virtual void update() override;
 	virtual void render() const override;
 };
 #endif
