@@ -39,14 +39,7 @@ void Ship::update()
 	al_rotate_transform(&trans3, angle);
 	//printf("p1x: %f p1y: %f p2x: %f p2y: %f p3x: %f p3y: %f\n", P1X, P1Y, P2X, P2Y, P3X, P3Y);
 
-	p1.x = P1X + pos.x;
-	p1.y = P1Y + pos.y;
-
-	p2.x = P2X + pos.x;
-	p2.y = P2Y + pos.y;
-
-	p3.x = P3X + pos.x;
-	p3.y = P3Y + pos.y;
+	transformLocalCoordsToWorldCoords();
 }
 
 void Ship::render() const

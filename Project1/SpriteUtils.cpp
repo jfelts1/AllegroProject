@@ -13,7 +13,7 @@ namespace Utils
 		}
 		else
 		{
-			spriteMap[filename] = al_load_bitmap("Images/test.bmp");
+			spriteMap[filename] = al_load_bitmap(filename);
 			return spriteMap[filename];
 		}
 	}
