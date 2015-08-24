@@ -2,6 +2,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <memory>
 #include <vector>
 #include <chrono>
@@ -9,6 +11,7 @@
 #include "GameObjectTypes/GameObject.h"
 #include "GameObjectTypes/Test.h"
 #include "GameObjectTypes/Ship.h"
+#include "GameObjectTypes/Projectile.h"
 #include "Keybinds.h"
 #include "Point.h"
 #include "Utils/ScreenUtils.h"
@@ -46,27 +49,27 @@ extern int DEBUG_RENDERING_TOGGLE;
 
 int main(int argc, char **argv)
 {
-	if (!al_init()) 
+	if (!al_init())
 	{
 		fprintf(stderr, "failed to initialize allegro!\n");
 		return EXIT_FAILURE;
 	}
 
-	display = al_create_display(SCREEN_SIZE_X,SCREEN_SIZE_Y);
-	if (display == nullptr) 
+	display = al_create_display(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	if (display == nullptr)
 	{
 		fprintf(stderr, "failed to create display!\n");
 		return EXIT_FAILURE;
 	}
 
-	if (!al_init_image_addon()) 
+	if (!al_init_image_addon())
 	{
 		fprintf(stderr, "failed to initialize allegro image addon!\n");
 		return EXIT_FAILURE;
 	}
 
 	events = al_create_event_queue();
-	if (events == nullptr) 
+	if (events == nullptr)
 	{
 		fprintf(stderr, "failed to create event queue\n");
 		return EXIT_FAILURE;
@@ -77,6 +80,25 @@ int main(int argc, char **argv)
 		fprintf(stderr, "failed to initialize allegro primitives addon!\n");
 		return EXIT_FAILURE;
 	}
+
+	if (!al_install_audio())
+	{
+		fprintf(stderr, "failed to install audio system\n");
+		return EXIT_FAILURE;
+	}
+
+	if (!al_init_acodec_addon())
+	{
+		fprintf(stderr, "failed to init audio codec system\n");
+		return EXIT_FAILURE;
+	}
+
+	if (!al_reserve_samples(5))
+	{
+		fprintf(stderr, "failed to reserve audio samples\n");
+		return EXIT_FAILURE;
+	}
+
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 
@@ -124,8 +146,10 @@ bool getUserInput()
 {
 	shared_ptr<GameObject> tmp = GameObjects[0];
 	shared_ptr<Ship> player = std::static_pointer_cast<Ship>(tmp);
-	static bool movementKeyHeld;
-	static int keyHeld = 0;
+	static bool forMovementKeyHeld;
+	static bool backMovementKeyHeld;
+	static bool leftMovementKeyHeld;
+	static bool rightMovementKeyHeld;
 
 	while (!al_is_event_queue_empty(events))
 	{
@@ -137,6 +161,8 @@ bool getUserInput()
 			if (mouseEvent.button & 1)
 			{
 				//printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
+				shared_ptr<Projectile> proj = player->fireProj();
+				GameObjects.push_back(proj);
 			}
 		}
 		//mouse was moved
@@ -155,10 +181,21 @@ bool getUserInput()
 			{
 				return true;
 			}
-			else if (keyboardEvent.keycode == MOVE_FORWARD || MOVE_BACK || MOVE_LEFT || MOVE_RIGHT)
+			else if (keyboardEvent.keycode == MOVE_FORWARD)
 			{
-				movementKeyHeld = true;
-				keyHeld = keyboardEvent.keycode;
+				forMovementKeyHeld = true;
+			}
+			else if (keyboardEvent.keycode == MOVE_BACK)
+			{
+				backMovementKeyHeld = true;
+			}
+			else if (keyboardEvent.keycode == MOVE_LEFT)
+			{
+				leftMovementKeyHeld = true;
+			}
+			else if (keyboardEvent.keycode == MOVE_RIGHT)
+			{
+				rightMovementKeyHeld = true;
 			}
 			else if (keyboardEvent.keycode == DEBUG_RENDERING_TOGGLE)
 			{
@@ -166,18 +203,42 @@ bool getUserInput()
 			}
 		}
 
-		if (movementKeyHeld)
+		if (forMovementKeyHeld)
 		{
-			player->setSpeedTarget(keyHeld);
+			player->moveFor();
+		}
+		if (backMovementKeyHeld)
+		{
+			player->moveBack();
+		}
+		if (leftMovementKeyHeld)
+		{
+			player->moveLeft();
+		}
+		if (rightMovementKeyHeld)
+		{
+			player->moveRight();
 		}
 
 		//key was released
 		if (ty == ALLEGRO_EVENT_KEY_UP)
 		{
 			keyboardEvent = event.keyboard;
-			if (keyboardEvent.keycode == MOVE_FORWARD || MOVE_BACK || MOVE_LEFT || MOVE_RIGHT)
+			if (keyboardEvent.keycode == MOVE_FORWARD)
 			{
-				movementKeyHeld = false;
+				forMovementKeyHeld = false;
+			}
+			else if (keyboardEvent.keycode == MOVE_BACK)
+			{
+				backMovementKeyHeld = false;
+			}
+			else if (keyboardEvent.keycode == MOVE_LEFT)
+			{
+				leftMovementKeyHeld = false;
+			}
+			else if (keyboardEvent.keycode == MOVE_RIGHT)
+			{
+				rightMovementKeyHeld = false;
 			}
 		}
 	}
@@ -186,10 +247,27 @@ bool getUserInput()
 
 void updateGameState()
 {
+	vector<int> objectsToRemove;
+	int i = 0;
+	//while updating check objects if they should be destroyed
 	for (auto GameObjsToUpdate : GameObjects)
 	{
-		GameObjsToUpdate->update();
+		if (GameObjsToUpdate->destroyCondition())
+		{
+			objectsToRemove.push_back(i);
+		}
+		else
+		{
+			GameObjsToUpdate->update();
+		}
+		i++;
 	}
+
+	for (auto rem : objectsToRemove)
+	{
+		GameObjects.erase(GameObjects.begin() + rem);
+	}
+	objectsToRemove.clear();
 }
 
 void renderGameState()

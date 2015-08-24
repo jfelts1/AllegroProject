@@ -36,6 +36,9 @@
     <ClCompile Include="Utils\ScreenUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectTypes\Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp">
@@ -70,5 +73,16 @@
     <ClInclude Include="Utils\ScreenUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameObjectTypes\Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\Explosion.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Sounds\Laser_Shoot2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

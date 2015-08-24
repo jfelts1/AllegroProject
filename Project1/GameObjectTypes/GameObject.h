@@ -52,7 +52,9 @@ public:
 	float getY()const { return pos.y; }
 	//in radians
 	float getRotation()const { return m_rotation; }
-	virtual void update() = 0;
+	void update();
+	virtual void updateHook() {}
+	virtual bool destroyCondition() = 0;
 	virtual void render() const = 0;
 	virtual void debugRender() const = 0;
 protected:

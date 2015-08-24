@@ -4,15 +4,18 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <memory>
 #include <map>
 #include <string>
-#include <allegro5/allegro_primitives.h>
 #include <cstdlib>
 #include "GameObject.h"
 #include "../Point.h"
 #include "../ColorDefines.h"
 #include "../Keybinds.h"
+#include "Projectile.h"
 #define SHIP_HEIGHT 30
 #define SHIP_WIDTH 20
 #define P1X trans1.m[0][0]
@@ -51,7 +54,9 @@ public:
 		al_rotate_transform(&trans2, rotation);
 		al_rotate_transform(&trans3, rotation);
 
-		transformShipPointsToWorldCoords();
+		transformRotatedShipPointsToWorldCoords();
+
+		firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
 	}
 
 	Ship(Point p, float rotation = 0) : GameObject(p,rotation)
@@ -90,9 +95,17 @@ public:
 	}
 
 	void setRotationTarget(Point p);
-	void setSpeedTarget(int key);
+	void moveFor();
+	void moveBack();
+	void moveLeft();
+	void moveRight();
+
+	std::shared_ptr<Projectile> fireProj();
+
 	// Inherited via GameObject
-	virtual void update() override;
+	virtual void updateHook() override;
+	// Inherited via GameObject
+	virtual bool destroyCondition() override;
 	// Inherited via GameObject
 	virtual void render() const override;
 	// Inherited via GameObject
@@ -109,6 +122,7 @@ private:
 	Point p1, p2, p3;
 	//position to rotate towards
 	Point m_mousePos;
+	ALLEGRO_SAMPLE* firingSound = nullptr;
 
 	inline void initTransforms(ALLEGRO_TRANSFORM& t1, ALLEGRO_TRANSFORM& t2, ALLEGRO_TRANSFORM& t3)
 	{
@@ -122,7 +136,7 @@ private:
 		t3.m[0][1] = p3.y - pos.y;
 	}
 
-	inline void transformShipPointsToWorldCoords()
+	inline void transformRotatedShipPointsToWorldCoords()
 	{
 		p1.x = P1X + pos.x;
 		p1.y = P1Y + pos.y;
@@ -133,7 +147,5 @@ private:
 		p3.x = P3X + pos.x;
 		p3.y = P3Y + pos.y;
 	}
-
-	
 };
 #endif

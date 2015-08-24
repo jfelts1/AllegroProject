@@ -40,3 +40,9 @@ GameObject & GameObject::operator=(const GameObject & orig)
 GameObject::~GameObject()
 {
 }
+
+void GameObject::update()
+{
+	updateHook();
+	Utils::screenWrap(pos);
+}

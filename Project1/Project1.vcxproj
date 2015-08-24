@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameObjectTypes\GameObject.cpp" />
+    <ClCompile Include="GameObjectTypes\Projectile.cpp" />
     <ClCompile Include="GameObjectTypes\Ship.cpp" />
     <ClCompile Include="GameObjectTypes\Test.cpp" />
     <ClCompile Include="Keybinds.cpp" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="ColorDefines.h" />
     <ClInclude Include="GameObjectTypes\GameObject.h" />
+    <ClInclude Include="GameObjectTypes\Projectile.h" />
     <ClInclude Include="GameObjectTypes\Ship.h" />
     <ClInclude Include="GameObjectTypes\Test.h" />
     <ClInclude Include="Keybinds.h" />
@@ -152,6 +154,10 @@
     <ClInclude Include="Utils\ScreenUtils.h" />
     <ClInclude Include="Utils\SpriteUtils.h" />
     <ClInclude Include="Vector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\Explosion.wav" />
+    <Media Include="Sounds\Laser_Shoot2.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

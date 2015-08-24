@@ -12,7 +12,7 @@ Test::Test(const Test & orig) : GameObject(orig)
 {
 }
 
-void Test::update()
+void Test::updateHook()
 {
 }
 
