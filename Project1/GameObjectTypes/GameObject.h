@@ -7,12 +7,13 @@
 #include <memory>
 #include <map>
 #include <string>
-#include "../SpriteUtils.h"
-#include "../Point.h"
 #include <cmath>
 #include <cstdlib>
-#include "../Vector.h"
 #include <vector>
+#include "../Utils/SpriteUtils.h"
+#include "../Point.h"
+#include "../Vector.h"
+#include "../Utils/ScreenUtils.h"
 #define PI 3.1415926535897932384626433832795
 using std::vector;
 

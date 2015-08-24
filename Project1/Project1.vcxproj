@@ -136,7 +136,8 @@
     <ClCompile Include="GameObjectTypes\Test.cpp" />
     <ClCompile Include="Keybinds.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SpriteUtils.cpp" />
+    <ClCompile Include="Utils\ScreenUtils.cpp" />
+    <ClCompile Include="Utils\SpriteUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp" />
@@ -148,7 +149,8 @@
     <ClInclude Include="GameObjectTypes\Test.h" />
     <ClInclude Include="Keybinds.h" />
     <ClInclude Include="Point.h" />
-    <ClInclude Include="SpriteUtils.h" />
+    <ClInclude Include="Utils\ScreenUtils.h" />
+    <ClInclude Include="Utils\SpriteUtils.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

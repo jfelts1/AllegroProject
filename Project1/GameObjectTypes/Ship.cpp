@@ -28,6 +28,7 @@ void Ship::setRotationTarget(Point p)
 	m_mousePos = p;
 }
 
+//set the movment vector member
 void Ship::setSpeedTarget(int key)
 {
 	if (key == MOVE_FORWARD)
@@ -63,8 +64,8 @@ void Ship::setSpeedTarget(int key)
 void Ship::update()
 {
 	m_rotation = atan2f(pos.y - m_mousePos.y, pos.x - m_mousePos.x)- PI/2;
+	//update ship position
 	pos = pos + m_vect;
-	//printf("p1x: %f p1y: %f p2x: %f p2y: %f p3x: %f p3y: %f\n", P1X, P1Y, P2X, P2Y, P3X, P3Y);
 	al_copy_transform(&trans1, &orig1);
 	al_copy_transform(&trans2, &orig2);
 	al_copy_transform(&trans3, &orig3);
@@ -73,6 +74,7 @@ void Ship::update()
 	al_rotate_transform(&trans3, m_rotation);
 
 	transformShipPointsToWorldCoords();
+	Utils::screenWrap(pos);
 }
 
 void Ship::render() const

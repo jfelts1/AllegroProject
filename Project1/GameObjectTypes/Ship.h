@@ -7,11 +7,10 @@
 #include <memory>
 #include <map>
 #include <string>
-#include "GameObject.h"
-#include "../SpriteUtils.h"
-#include "../Point.h"
 #include <allegro5/allegro_primitives.h>
 #include <cstdlib>
+#include "GameObject.h"
+#include "../Point.h"
 #include "../ColorDefines.h"
 #include "../Keybinds.h"
 #define SHIP_HEIGHT 30
@@ -24,8 +23,6 @@
 #define P3Y trans3.m[0][1]
 #define MAX_SHIP_SPEED 10
 #define SHIP_ACELLERATION 1
-#define SCREEN_SIZE_X 640
-#define SCREEN_SIZE_Y 480
 
 extern int MOVE_FORWARD;
 extern int MOVE_LEFT;

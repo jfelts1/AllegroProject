@@ -2,18 +2,17 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <memory>
+#include <vector>
+#include <chrono>
+#include <thread>
 #include "GameObjectTypes/GameObject.h"
 #include "GameObjectTypes/Test.h"
 #include "GameObjectTypes/Ship.h"
 #include "Keybinds.h"
 #include "Point.h"
-#include <memory>
-#include <vector>
-#include <chrono>
-#include <thread>
+#include "Utils/ScreenUtils.h"
 #define MS_PER_TICK 16
-#define SCREEN_SIZE_X 640
-#define SCREEN_SIZE_Y 480
 
 using std::chrono::high_resolution_clock;
 using std::chrono::time_point;
@@ -120,11 +119,14 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
+
 bool getUserInput()
 {
 	shared_ptr<GameObject> tmp = GameObjects[0];
 	shared_ptr<Ship> player = std::static_pointer_cast<Ship>(tmp);
-	
+	static bool movementKeyHeld;
+	static int keyHeld = 0;
+
 	while (!al_is_event_queue_empty(events))
 	{
 		al_get_next_event(events, &event);
@@ -153,22 +155,31 @@ bool getUserInput()
 			{
 				return true;
 			}
+			else if (keyboardEvent.keycode == MOVE_FORWARD || MOVE_BACK || MOVE_LEFT || MOVE_RIGHT)
+			{
+				movementKeyHeld = true;
+				keyHeld = keyboardEvent.keycode;
+			}
 			else if (keyboardEvent.keycode == DEBUG_RENDERING_TOGGLE)
 			{
 				enableDebugRendering = !enableDebugRendering;
 			}
-			
 		}
-		//key was held down
-		if (ty == ALLEGRO_EVENT_KEY_CHAR)
+
+		if (movementKeyHeld)
+		{
+			player->setSpeedTarget(keyHeld);
+		}
+
+		//key was released
+		if (ty == ALLEGRO_EVENT_KEY_UP)
 		{
 			keyboardEvent = event.keyboard;
 			if (keyboardEvent.keycode == MOVE_FORWARD || MOVE_BACK || MOVE_LEFT || MOVE_RIGHT)
 			{
-				player->setSpeedTarget(keyboardEvent.keycode);
+				movementKeyHeld = false;
 			}
 		}
-
 	}
 	return false;
 }
