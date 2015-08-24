@@ -3,6 +3,8 @@
 #pragma once
 
 #include <allegro5/allegro.h>
+#include "Vector.h"
+using Utils::Vector;
 
 struct Point
 {
@@ -61,6 +63,12 @@ struct Point
 		x = val;
 		y = val;
 		return *this;
+	}
+
+	Point operator+(const Vector rhs)
+	{
+		Point ret(this->x + rhs.getX(), this->y + rhs.getY());
+		return ret;
 	}
 
 	void getCurMousePos(ALLEGRO_MOUSE_EVENT mouse)

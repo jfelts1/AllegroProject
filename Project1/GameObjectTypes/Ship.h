@@ -12,16 +12,25 @@
 #include "../Point.h"
 #include <allegro5/allegro_primitives.h>
 #include <cstdlib>
-#define SHIP_HEIGHT 20
-#define SHIP_WIDTH 10
+#include "../ColorDefines.h"
+#include "../Keybinds.h"
+#define SHIP_HEIGHT 30
+#define SHIP_WIDTH 20
 #define P1X trans1.m[0][0]
 #define P1Y trans1.m[0][1]
 #define P2X trans2.m[0][0]
 #define P2Y trans2.m[0][1]
 #define P3X trans3.m[0][0]
 #define P3Y trans3.m[0][1]
+#define MAX_SHIP_SPEED 10
+#define SHIP_ACELLERATION 1
 #define SCREEN_SIZE_X 640
 #define SCREEN_SIZE_Y 480
+
+extern int MOVE_FORWARD;
+extern int MOVE_LEFT;
+extern int MOVE_RIGHT;
+extern int MOVE_BACK;
 
 class Ship
 	:public GameObject
@@ -45,7 +54,7 @@ public:
 		al_rotate_transform(&trans2, rotation);
 		al_rotate_transform(&trans3, rotation);
 
-		transformLocalCoordsToWorldCoords();
+		transformShipPointsToWorldCoords();
 	}
 
 	Ship(Point p, float rotation = 0) : GameObject(p,rotation)
@@ -84,9 +93,13 @@ public:
 	}
 
 	void setRotationTarget(Point p);
-
+	void setSpeedTarget(int key);
+	// Inherited via GameObject
 	virtual void update() override;
+	// Inherited via GameObject
 	virtual void render() const override;
+	// Inherited via GameObject
+	virtual void debugRender() const override;
 
 private:
 	ALLEGRO_TRANSFORM trans1;
@@ -95,7 +108,7 @@ private:
 	ALLEGRO_TRANSFORM orig1;
 	ALLEGRO_TRANSFORM orig2;
 	ALLEGRO_TRANSFORM orig3;
-	//point that make up the shape of the ship
+	//point that makes up the shape of the ship
 	Point p1, p2, p3;
 	//position to rotate towards
 	Point m_mousePos;
@@ -112,7 +125,7 @@ private:
 		t3.m[0][1] = p3.y - pos.y;
 	}
 
-	inline void transformLocalCoordsToWorldCoords()
+	inline void transformShipPointsToWorldCoords()
 	{
 		p1.x = P1X + pos.x;
 		p1.y = P1Y + pos.y;
@@ -123,5 +136,7 @@ private:
 		p3.x = P3X + pos.x;
 		p3.y = P3Y + pos.y;
 	}
+
+	
 };
 #endif

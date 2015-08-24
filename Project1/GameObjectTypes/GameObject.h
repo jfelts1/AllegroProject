@@ -11,7 +11,10 @@
 #include "../Point.h"
 #include <cmath>
 #include <cstdlib>
+#include "../Vector.h"
+#include <vector>
 #define PI 3.1415926535897932384626433832795
+using std::vector;
 
 class GameObject
 {
@@ -50,11 +53,14 @@ public:
 	float getRotation()const { return m_rotation; }
 	virtual void update() = 0;
 	virtual void render() const = 0;
+	virtual void debugRender() const = 0;
 protected:
 	ALLEGRO_BITMAP* m_sprite;
-	//the ship's position relative to the gameworld origin
+	//the objects's position relative to the gameworld origin
 	Point pos;
-	//the ship's rotation in radians
+	//the objects's rotation in radians
 	float m_rotation = 0;
+	//the objects's movement vector
+	Utils::Vector m_vect;
 };
 #endif

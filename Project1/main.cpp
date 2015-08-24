@@ -5,6 +5,7 @@
 #include "GameObjectTypes/GameObject.h"
 #include "GameObjectTypes/Test.h"
 #include "GameObjectTypes/Ship.h"
+#include "Keybinds.h"
 #include "Point.h"
 #include <memory>
 #include <vector>
@@ -35,6 +36,14 @@ ALLEGRO_EVENT event;
 ALLEGRO_KEYBOARD_EVENT keyboardEvent;
 vector<shared_ptr<GameObject>> GameObjects;
 Point mouseCurPos;
+bool enableDebugRendering = true;
+
+extern int MOVE_FORWARD;
+extern int MOVE_LEFT;
+extern int MOVE_RIGHT;
+extern int MOVE_BACK;
+extern int QUIT;
+extern int DEBUG_RENDERING_TOGGLE;
 
 int main(int argc, char **argv)
 {
@@ -106,16 +115,16 @@ int main(int argc, char **argv)
 	al_destroy_display(display);
 
 	al_destroy_event_queue(events);
+	al_shutdown_image_addon();
+	al_shutdown_primitives_addon();
 
 	return EXIT_SUCCESS;
 }
-
-
-
 bool getUserInput()
 {
 	shared_ptr<GameObject> tmp = GameObjects[0];
 	shared_ptr<Ship> player = std::static_pointer_cast<Ship>(tmp);
+	
 	while (!al_is_event_queue_empty(events))
 	{
 		al_get_next_event(events, &event);
@@ -125,24 +134,41 @@ bool getUserInput()
 			mouseEvent = event.mouse;
 			if (mouseEvent.button & 1)
 			{
-				printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
+				//printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
 			}
 		}
+		//mouse was moved
 		if (ty == ALLEGRO_EVENT_MOUSE_AXES)
 		{
 			mouseEvent = event.mouse;
 			mouseCurPos.getCurMousePos(mouseEvent);
 			player->setRotationTarget(mouseCurPos);
-			printf("mouse at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
+			//printf("mouse at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
 		}
+		//key was pressed
 		if (ty == ALLEGRO_EVENT_KEY_DOWN)
 		{
 			keyboardEvent = event.keyboard;
-			if (keyboardEvent.keycode == ALLEGRO_KEY_Q)
+			if (keyboardEvent.keycode == QUIT)
 			{
 				return true;
 			}
+			else if (keyboardEvent.keycode == DEBUG_RENDERING_TOGGLE)
+			{
+				enableDebugRendering = !enableDebugRendering;
+			}
+			
 		}
+		//key was held down
+		if (ty == ALLEGRO_EVENT_KEY_CHAR)
+		{
+			keyboardEvent = event.keyboard;
+			if (keyboardEvent.keycode == MOVE_FORWARD || MOVE_BACK || MOVE_LEFT || MOVE_RIGHT)
+			{
+				player->setSpeedTarget(keyboardEvent.keycode);
+			}
+		}
+
 	}
 	return false;
 }
@@ -161,6 +187,10 @@ void renderGameState()
 	for (auto GameObjsToRender : GameObjects)
 	{
 		GameObjsToRender->render();
+		if (enableDebugRendering)
+		{
+			GameObjsToRender->debugRender();
+		}
 		al_flip_display();
 	}
 }
