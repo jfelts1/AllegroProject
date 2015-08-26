@@ -12,7 +12,7 @@ class Asteroid :
 public:
 	Asteroid(Vector vect, float x = 0, float y = 0, float rotation = 0, const char* filename = "Images/Asteroids/Asteroid1.png") :GameObject(x, y, rotation, filename)
 	{
-		
+		m_vect = vect;
 	}
 	virtual ~Asteroid() {}
 
