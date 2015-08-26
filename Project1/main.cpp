@@ -280,6 +280,7 @@ void renderGameState()
 		{
 			GameObjsToRender->debugRender();
 		}
-		al_flip_display();
+		//al_flip_display();
 	}
+	al_flip_display();
 }
