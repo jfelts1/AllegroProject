@@ -104,13 +104,20 @@ void runGame()
 	{
 		auto startTime = high_resolution_clock::now();
 
+		auto startInputUpdateTime = high_resolution_clock::now();
 		quit = Utils::getUserInput(events,player);
 		Utils::updateGameState();
+		auto endInputUpdateTime = high_resolution_clock::now();
+		auto startRenderTime = high_resolution_clock::now();
 		Utils::renderGameState();
+		auto endRenderTime = high_resolution_clock::now();
 
 		auto endTime = high_resolution_clock::now();
 		auto gameTickTime = duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
-		printf("Time elapsed: %lldms   Waiting for: %lldms\n", gameTickTime, MS_PER_TICK - gameTickTime);
+		auto inputUpdateTime = duration_cast<std::chrono::milliseconds>(endInputUpdateTime - startInputUpdateTime).count();
+		auto renderTime = duration_cast<std::chrono::milliseconds>(endRenderTime - startRenderTime).count();
+		printf("Input and Update Time: %lldms		Render Time: %lldms\n", inputUpdateTime, renderTime);
+		//printf("Time elapsed: %lldms   Waiting for: %lldms\n", gameTickTime, MS_PER_TICK - gameTickTime);
 		std::this_thread::sleep_for(std::chrono::milliseconds(MS_PER_TICK - gameTickTime));
 	}
 

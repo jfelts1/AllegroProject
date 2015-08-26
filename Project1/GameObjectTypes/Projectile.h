@@ -24,7 +24,7 @@ public:
 		m_vect.setX(m_vect.getX() - SPEED*cos(m_rotation + PI / 2));
 	}
 
-	virtual ~Projectile() { printf("projectile destroyed lifetime was: %i\n",m_lifetime); }
+	virtual ~Projectile() { /*printf("projectile destroyed lifetime was: %i\n",m_lifetime);*/ }
 
 	virtual void updateHook() override;
 	// Inherited via GameObject
