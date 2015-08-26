@@ -54,7 +54,7 @@ void Ship::moveRight()
 
 std::shared_ptr<Projectile> Ship::fireProj()
 {
-	al_play_sample(firingSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+	al_play_sample(firingSound, .5, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 	return std::make_shared<Projectile>(p1 ,m_rotation);
 }
 

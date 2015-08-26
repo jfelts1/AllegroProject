@@ -15,7 +15,6 @@
 #include "../Vector.h"
 #include "../Utils/ScreenUtils.h"
 #define PI 3.1415926535897932384626433832795
-using std::vector;
 
 class GameObject
 {

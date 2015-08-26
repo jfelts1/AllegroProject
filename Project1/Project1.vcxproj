@@ -135,8 +135,10 @@
     <ClCompile Include="GameObjectTypes\Projectile.cpp" />
     <ClCompile Include="GameObjectTypes\Ship.cpp" />
     <ClCompile Include="GameObjectTypes\Test.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Keybinds.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Utils\GameUtils.cpp" />
     <ClCompile Include="Utils\ScreenUtils.cpp" />
     <ClCompile Include="Utils\SpriteUtils.cpp" />
   </ItemGroup>
@@ -149,8 +151,10 @@
     <ClInclude Include="GameObjectTypes\Projectile.h" />
     <ClInclude Include="GameObjectTypes\Ship.h" />
     <ClInclude Include="GameObjectTypes\Test.h" />
+    <ClInclude Include="GameWorld.h" />
     <ClInclude Include="Keybinds.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Utils\GameUtils.h" />
     <ClInclude Include="Utils\ScreenUtils.h" />
     <ClInclude Include="Utils\SpriteUtils.h" />
     <ClInclude Include="Vector.h" />
