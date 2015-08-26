@@ -9,6 +9,7 @@ using std::shared_ptr;
 using std::make_shared;
 
 vector<shared_ptr<GameObject>> GameObjects;
+vector<shared_ptr<GameObject>> GameObjectsToAdd;
 shared_ptr<Ship> player;
 
 ALLEGRO_DISPLAY* display = nullptr;
@@ -87,7 +88,6 @@ bool initGameWorld()
 	return true;
 }
 
-
 void runGame()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -98,26 +98,41 @@ void runGame()
 	GameObjects.push_back(make_shared<Ship>(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2));
 	shared_ptr<GameObject> tmp = GameObjects[0];
 	player = std::static_pointer_cast<Ship>(tmp);
+	GameObjects.push_back(make_shared<AsteroidFactory>());
 	bool quit = false;
 	//main game loop
 	while (!quit)
 	{
 		auto startTime = high_resolution_clock::now();
 
+#if TRACK_TICK_TIMES == 1
 		auto startInputUpdateTime = high_resolution_clock::now();
+#endif
+		//add new GameObjects at the start of the gametick
+		for (auto obj : GameObjectsToAdd)
+		{
+			GameObjects.push_back(obj);
+		}
+		GameObjectsToAdd.clear();
 		quit = Utils::getUserInput(events,player);
 		Utils::updateGameState();
+#if TRACK_TICK_TIMES == 1
 		auto endInputUpdateTime = high_resolution_clock::now();
 		auto startRenderTime = high_resolution_clock::now();
+#endif
 		Utils::renderGameState();
+#if TRACK_TICK_TIMES == 1
 		auto endRenderTime = high_resolution_clock::now();
+#endif
 
 		auto endTime = high_resolution_clock::now();
 		auto gameTickTime = duration_cast<std::chrono::milliseconds>(endTime - startTime).count();
+#if TRACK_TICK_TIMES == 1
 		auto inputUpdateTime = duration_cast<std::chrono::milliseconds>(endInputUpdateTime - startInputUpdateTime).count();
 		auto renderTime = duration_cast<std::chrono::milliseconds>(endRenderTime - startRenderTime).count();
-		printf("Input and Update Time: %lldms		Render Time: %lldms\n", inputUpdateTime, renderTime);
-		//printf("Time elapsed: %lldms   Waiting for: %lldms\n", gameTickTime, MS_PER_TICK - gameTickTime);
+		printf("Input and Update Time: %lld  Render Time: %lld  ", inputUpdateTime, renderTime);
+		printf("Time elapsed: %lld  Waiting for: %lld\n", gameTickTime, MS_PER_TICK - gameTickTime);
+#endif
 		std::this_thread::sleep_for(std::chrono::milliseconds(MS_PER_TICK - gameTickTime));
 	}
 
@@ -129,147 +144,3 @@ void runGame()
 	al_shutdown_image_addon();
 	al_shutdown_primitives_addon();
 }
-
-/*bool getUserInput()
-{
-	shared_ptr<GameObject> tmp = GameObjects[0];
-	shared_ptr<Ship> player = std::static_pointer_cast<Ship>(tmp);
-	static bool forMovementKeyHeld;
-	static bool backMovementKeyHeld;
-	static bool leftMovementKeyHeld;
-	static bool rightMovementKeyHeld;
-
-	while (!al_is_event_queue_empty(events))
-	{
-		al_get_next_event(events, &event);
-		ALLEGRO_EVENT_TYPE ty = event.type;
-		if (ty == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-		{
-			mouseEvent = event.mouse;
-			if (mouseEvent.button & 1)
-			{
-				//printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
-				shared_ptr<Projectile> proj = player->fireProj();
-				GameObjects.push_back(proj);
-			}
-		}
-		//mouse was moved
-		if (ty == ALLEGRO_EVENT_MOUSE_AXES)
-		{
-			mouseEvent = event.mouse;
-			mouseCurPos.getCurMousePos(mouseEvent);
-			player->setRotationTarget(mouseCurPos);
-			//printf("mouse at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
-		}
-		//key was pressed
-		if (ty == ALLEGRO_EVENT_KEY_DOWN)
-		{
-			keyboardEvent = event.keyboard;
-			if (keyboardEvent.keycode == QUIT)
-			{
-				return true;
-			}
-			else if (keyboardEvent.keycode == MOVE_FORWARD)
-			{
-				forMovementKeyHeld = true;
-			}
-			else if (keyboardEvent.keycode == MOVE_BACK)
-			{
-				backMovementKeyHeld = true;
-			}
-			else if (keyboardEvent.keycode == MOVE_LEFT)
-			{
-				leftMovementKeyHeld = true;
-			}
-			else if (keyboardEvent.keycode == MOVE_RIGHT)
-			{
-				rightMovementKeyHeld = true;
-			}
-			else if (keyboardEvent.keycode == DEBUG_RENDERING_TOGGLE)
-			{
-				enableDebugRendering = !enableDebugRendering;
-			}
-		}
-
-		if (forMovementKeyHeld)
-		{
-			player->moveFor();
-		}
-		if (backMovementKeyHeld)
-		{
-			player->moveBack();
-		}
-		if (leftMovementKeyHeld)
-		{
-			player->moveLeft();
-		}
-		if (rightMovementKeyHeld)
-		{
-			player->moveRight();
-		}
-
-		//key was released
-		if (ty == ALLEGRO_EVENT_KEY_UP)
-		{
-			keyboardEvent = event.keyboard;
-			if (keyboardEvent.keycode == MOVE_FORWARD)
-			{
-				forMovementKeyHeld = false;
-			}
-			else if (keyboardEvent.keycode == MOVE_BACK)
-			{
-				backMovementKeyHeld = false;
-			}
-			else if (keyboardEvent.keycode == MOVE_LEFT)
-			{
-				leftMovementKeyHeld = false;
-			}
-			else if (keyboardEvent.keycode == MOVE_RIGHT)
-			{
-				rightMovementKeyHeld = false;
-			}
-		}
-	}
-	return false;
-}*/
-
-/*void updateGameState()
-{
-	vector<int> objectsToRemove;
-	int i = 0;
-	//while updating check objects if they should be destroyed
-	for (auto GameObjsToUpdate : GameObjects)
-	{
-		if (GameObjsToUpdate->destroyCondition())
-		{
-			objectsToRemove.push_back(i);
-		}
-		else
-		{
-			GameObjsToUpdate->update();
-		}
-		i++;
-	}
-
-	for (auto rem : objectsToRemove)
-	{
-		GameObjects.erase(GameObjects.begin() + rem);
-	}
-	objectsToRemove.clear();
-}
-
-void renderGameState()
-{
-	//clear existing frame
-	al_clear_to_color(BLACK);
-	//render new frame
-	for (auto GameObjsToRender : GameObjects)
-	{
-		GameObjsToRender->render();
-		if (enableDebugRendering)
-		{
-			GameObjsToRender->debugRender();
-		}
-	}
-	al_flip_display();
-}*/

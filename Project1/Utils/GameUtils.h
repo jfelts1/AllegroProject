@@ -8,15 +8,16 @@
 #include "../GameObjectTypes/Ship.h"
 #include "../GameObjectTypes/Projectile.h"
 #include "../Point.h"
-#include "../Keybinds.h"
 
 extern std::vector<std::shared_ptr<GameObject>> GameObjects;
+extern std::vector<std::shared_ptr<GameObject>> GameObjectsToAdd;
 
 namespace Utils
 {
 	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, std::shared_ptr<Ship> player);
 	void updateGameState();
 	void renderGameState();
+	void addGameObject(std::shared_ptr<GameObject> obj);
 }
 
 

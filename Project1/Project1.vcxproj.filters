@@ -45,9 +45,30 @@
     <ClCompile Include="Utils\GameUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectTypes\Asteroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectTypes\AsteroidFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\Asteroids\Asteroid1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\Asteroids\Asteroid2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\Asteroids\Asteroid3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\Asteroids\Asteroid4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\Asteroids\Asteroid5.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -86,6 +107,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\GameUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTypes\Asteroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectTypes\AsteroidFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

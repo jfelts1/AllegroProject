@@ -13,7 +13,6 @@ extern int DEBUG_RENDERING_TOGGLE;
 
 namespace Utils
 {
-	
 	bool enableDebugRendering = true;
 
 	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, shared_ptr<Ship> player)
@@ -161,6 +160,11 @@ namespace Utils
 			}
 		}
 		al_flip_display();
+	}
+
+	void addGameObject(shared_ptr<GameObject> obj)
+	{
+		GameObjectsToAdd.push_back(obj);
 	}
 }
 

@@ -131,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObjectTypes\Asteroid.cpp" />
+    <ClCompile Include="GameObjectTypes\AsteroidFactory.cpp" />
     <ClCompile Include="GameObjectTypes\GameObject.cpp" />
     <ClCompile Include="GameObjectTypes\Projectile.cpp" />
     <ClCompile Include="GameObjectTypes\Ship.cpp" />
@@ -143,10 +145,17 @@
     <ClCompile Include="Utils\SpriteUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\Asteroids\Asteroid1.png" />
+    <Image Include="Images\Asteroids\Asteroid2.png" />
+    <Image Include="Images\Asteroids\Asteroid3.png" />
+    <Image Include="Images\Asteroids\Asteroid4.png" />
+    <Image Include="Images\Asteroids\Asteroid5.png" />
     <Image Include="Images\test.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorDefines.h" />
+    <ClInclude Include="GameObjectTypes\Asteroid.h" />
+    <ClInclude Include="GameObjectTypes\AsteroidFactory.h" />
     <ClInclude Include="GameObjectTypes\GameObject.h" />
     <ClInclude Include="GameObjectTypes\Projectile.h" />
     <ClInclude Include="GameObjectTypes\Ship.h" />
