@@ -51,6 +51,12 @@
     <ClCompile Include="GameObjectTypes\AsteroidFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\FileUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\StringUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp">
@@ -115,6 +121,12 @@
     <ClInclude Include="GameObjectTypes\AsteroidFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\FileUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\StringUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\Explosion.wav">
@@ -123,5 +135,13 @@
     <Media Include="Sounds\Laser_Shoot2.wav">
       <Filter>Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Asteroids.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Data\gameConsts.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

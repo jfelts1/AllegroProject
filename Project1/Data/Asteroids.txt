@@ -1,0 +1,5 @@
+Images/Asteroid1.png
+Images/Asteroid2.png
+Images/Asteroid3.png
+Images/Asteroid4.png
+Images/Asteroid5.png

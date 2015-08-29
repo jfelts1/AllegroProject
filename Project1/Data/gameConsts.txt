@@ -1,0 +1,4 @@
+[Asteroids]
+asteroidSpawnChance = 0.05
+maxAsteroids = 10
+maxAsteroidSpeed = 5

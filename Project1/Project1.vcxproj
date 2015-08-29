@@ -140,9 +140,11 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Keybinds.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Utils\FileUtils.cpp" />
     <ClCompile Include="Utils\GameUtils.cpp" />
     <ClCompile Include="Utils\ScreenUtils.cpp" />
     <ClCompile Include="Utils\SpriteUtils.cpp" />
+    <ClCompile Include="Utils\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\Asteroids\Asteroid1.png" />
@@ -163,14 +165,20 @@
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="Keybinds.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Utils\FileUtils.h" />
     <ClInclude Include="Utils\GameUtils.h" />
     <ClInclude Include="Utils\ScreenUtils.h" />
     <ClInclude Include="Utils\SpriteUtils.h" />
+    <ClInclude Include="Utils\StringUtils.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\Explosion.wav" />
     <Media Include="Sounds\Laser_Shoot2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Asteroids.txt" />
+    <Text Include="Data\gameConsts.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

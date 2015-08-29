@@ -7,16 +7,15 @@
 #include <vector>
 #include <cstdio>
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <memory>
 #include "../Utils/SpriteUtils.h"
 #include "../Utils/GameUtils.h"
+#include "../Utils/FileUtils.h"
 #include "../Vector.h"
 #include "GameObject.h"
 #include "Asteroid.h"
-#define ASTEROID_SPAWN_CHANCE .05
-
-
 
 class AsteroidFactory :
 	public GameObject
@@ -25,6 +24,7 @@ public:
 	AsteroidFactory() 
 	{
 		loadAsteroidSpriteFiles();
+		loadAsteroidValues();
 	}
 	virtual ~AsteroidFactory() {}
 
@@ -37,6 +37,11 @@ private:
 	std::mt19937 m_rand;
 	std::vector<std::string> m_spriteFiles;
 
+	float m_asteroidSpawnChance = 0.05f;
+	int m_maxAsteroids = 10;
+	float m_maxAsteroidSpeed = 5.0f;
+
 	void loadAsteroidSpriteFiles();
+	void loadAsteroidValues();
 };
 #endif

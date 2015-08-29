@@ -14,6 +14,10 @@ namespace Utils
 		else
 		{
 			spriteMap[filename] = al_load_bitmap(filename);
+			if (spriteMap[filename] == NULL)
+			{
+				std::cerr << "Error loading sprite: " << filename << std::endl;
+			}
 			return spriteMap[filename];
 		}
 	}

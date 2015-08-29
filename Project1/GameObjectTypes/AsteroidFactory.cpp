@@ -1,16 +1,24 @@
 #include "AsteroidFactory.h"
 
+using std::ifstream;
+using std::string;
+using std::cout;
+using std::endl;
+
 void AsteroidFactory::updateHook()
 {
 	float r = (float)m_rand();
-	if (ASTEROID_SPAWN_CHANCE > (r / UINT_MAX))
+	if (m_asteroidSpawnChance > (r / UINT_MAX))
 	{
-		std::string randFilename = m_spriteFiles[(m_rand() % m_spriteFiles.size())];
+		string randFilename = m_spriteFiles[(m_rand() % m_spriteFiles.size())];
 		Vector v;
-		v.setX(m_rand() % MAX_ASTEROID_SPEED);
-		v.setY(m_rand() % MAX_ASTEROID_SPEED);
+		v.setX(fmod(m_rand(),m_maxAsteroidSpeed));
+		v.setY(fmod(m_rand(),m_maxAsteroidSpeed));
 		//printf("x: %f y:%f\n", v.getX(), v.getY());
-		std::shared_ptr<GameObject> newAsteroid = std::make_shared<Asteroid>(v,m_rand()%SCREEN_SIZE_X, m_rand()%SCREEN_SIZE_Y,fmod(m_rand(),PI), randFilename.c_str());
+		float xPos = m_rand() % SCREEN_SIZE_X;
+		float yPos = m_rand() % SCREEN_SIZE_Y;
+		float rotation = fmod(m_rand(), PI);
+		std::shared_ptr<GameObject> newAsteroid = std::make_shared<Asteroid>(v ,xPos ,yPos ,rotation, randFilename.c_str());
 		Utils::addGameObject(newAsteroid);
 		//puts(randFilename.c_str());
 	}
@@ -21,6 +29,7 @@ bool AsteroidFactory::destroyCondition()
 	return false;
 }
 
+//renders nothing
 void AsteroidFactory::render() const
 {
 }
@@ -37,10 +46,26 @@ void AsteroidFactory::loadAsteroidSpriteFiles()
 	while (file != nullptr)
 	{
 		const char* tmp = al_get_fs_entry_name(file);
-		m_spriteFiles.push_back(tmp);
+		ALLEGRO_PATH* asteroidAbsPath = al_create_path(tmp);
+		string tmp2 = al_get_path_filename(asteroidAbsPath);
+		string asteroidRelPath = "Images/Asteroids/" + tmp2;
+		//std::cout << asteroidRelPath << std::endl;
+		m_spriteFiles.push_back(asteroidRelPath);
+		//loads the sprite into memory
+		Utils::getSprite(asteroidRelPath.c_str());
+		al_destroy_path(asteroidAbsPath);
 		al_destroy_fs_entry(file);
 		file = al_read_directory(f);
 	}
 	al_close_directory(f);
 	al_destroy_fs_entry(f);
+}
+
+void AsteroidFactory::loadAsteroidValues()
+{
+	string asteroidInfo = Utils::getGameConstsTagInfo(Utils::Asteroids);
+	cout << asteroidInfo << endl;
+	m_asteroidSpawnChance = Utils::getFloatFromStringWPrefix(asteroidInfo, "asteroidSpawnChance=");
+	m_maxAsteroids = Utils::getIntFromStringWPreFix(asteroidInfo, "maxAsteroids=");
+	m_maxAsteroidSpeed = Utils::getFloatFromStringWPrefix(asteroidInfo, "maxAsteroidSpeed=");
 }

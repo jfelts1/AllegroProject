@@ -19,8 +19,6 @@ ALLEGRO_EVENT_SOURCE* mouseEventSource = nullptr;
 ALLEGRO_EVENT_SOURCE* keyboardEventSource = nullptr;
 
 
-
-
 bool initGameWorld()
 {
 	if (!al_init())
