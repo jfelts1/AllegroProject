@@ -15,9 +15,10 @@
 #include "GameObjectTypes/Ship.h"
 #include "GameObjectTypes/Projectile.h"
 #include "GameObjectTypes/AsteroidFactory.h"
+#include "Utils/SpriteUtils.h"
+#include "Utils/GameUtils.h"
 #include "ColorDefines.h"
 #include "Point.h"
-#include "Utils/GameUtils.h"
 #define MS_PER_TICK 16
 #define TRACK_TICK_TIMES 0
 

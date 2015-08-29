@@ -21,4 +21,14 @@ namespace Utils
 			return spriteMap[filename];
 		}
 	}
+
+	void cleanSpriteMap()
+	{
+		for (auto bit : spriteMap)
+		{
+			al_destroy_bitmap(bit.second);
+		}
+	}
+
+
 }

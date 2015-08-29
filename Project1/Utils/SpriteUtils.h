@@ -12,6 +12,7 @@
 namespace Utils
 {
 	extern ALLEGRO_BITMAP* getSprite(const char* filename);
+	void cleanSpriteMap();
 }
 
 #endif

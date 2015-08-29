@@ -142,6 +142,7 @@ void shutdownGameWorld()
 	al_flip_display();
 	al_rest(1);
 	al_destroy_display(display);
+	Utils::cleanSpriteMap();
 
 	al_unregister_event_source(events, mouseEventSource);
 	al_unregister_event_source(events, keyboardEventSource);
