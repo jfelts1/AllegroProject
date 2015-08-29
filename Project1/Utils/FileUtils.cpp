@@ -8,7 +8,6 @@ namespace Utils
 	string getGameConstsTagInfo(gameConstsTags tag)
 	{
 		string ret;
-		char tmp[BUFFERSIZE] = "";
 		ifstream fin;
 		string gameConstsPath = "Data/gameConsts.txt";
 		fin.open(gameConstsPath);

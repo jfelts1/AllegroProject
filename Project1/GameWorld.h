@@ -26,6 +26,7 @@ extern std::vector<std::shared_ptr<GameObject>> GameObjectsToAdd;
 
 bool initGameWorld();
 void runGame();
+void shutdownGameWorld();
 
 
 #endif

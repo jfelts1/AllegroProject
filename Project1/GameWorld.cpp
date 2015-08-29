@@ -134,11 +134,22 @@ void runGame()
 		std::this_thread::sleep_for(std::chrono::milliseconds(MS_PER_TICK - gameTickTime));
 	}
 
+	
+}
+
+void shutdownGameWorld()
+{
 	al_flip_display();
 	al_rest(1);
 	al_destroy_display(display);
 
+	al_unregister_event_source(events, mouseEventSource);
+	al_unregister_event_source(events, keyboardEventSource);
 	al_destroy_event_queue(events);
 	al_shutdown_image_addon();
 	al_shutdown_primitives_addon();
+	al_uninstall_audio();
+	al_uninstall_keyboard();
+	al_uninstall_mouse();
+	al_uninstall_system();
 }
