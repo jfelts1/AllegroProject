@@ -16,11 +16,26 @@ void Projectile::debugRender() const
 
 }
 
+#if _WIN32
+#pragma warning(disable: 4100)
+#endif
+void Projectile::hitBy(const GameObject * other)
+{
+	m_hit = true;
+}
+#if _WIN32
+#pragma warning(default: 4100)
+#endif
+
 bool Projectile::destroyCondition()
 {
-	if (m_lifetime < MAX_LIFETIME)
+	if (m_hit == true)
 	{
-		return false;
+		return true;
 	}
-	return true;
+	if (m_lifetime >= MAX_LIFETIME)
+	{
+		return true;
+	}
+	return false;
 }

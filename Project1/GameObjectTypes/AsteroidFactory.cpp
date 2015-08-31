@@ -7,20 +7,24 @@ using std::endl;
 
 void AsteroidFactory::updateHook()
 {
-	float r = (float)m_rand();
-	if (m_asteroidSpawnChance > (r / UINT_MAX))
+	if (asteroidCount < m_maxAsteroids)
 	{
-		string randFilename = m_spriteFiles[(m_rand() % m_spriteFiles.size())];
-		Vector v;
-		v.setX(fmod(m_rand(),m_maxAsteroidSpeed));
-		v.setY(fmod(m_rand(),m_maxAsteroidSpeed));
-		//printf("x: %f y:%f\n", v.getX(), v.getY());
-		float xPos = m_rand() % SCREEN_SIZE_X;
-		float yPos = m_rand() % SCREEN_SIZE_Y;
-		float rotation = fmod(m_rand(), PI);
-		std::shared_ptr<GameObject> newAsteroid = std::make_shared<Asteroid>(v ,xPos ,yPos ,rotation, randFilename.c_str());
-		Utils::addGameObject(newAsteroid);
-		//puts(randFilename.c_str());
+		float r = (float)m_rand();
+		if (m_asteroidSpawnChance > (r / UINT_MAX))
+		{
+			string randFilename = m_spriteFiles[(m_rand() % m_spriteFiles.size())];
+			Vector v;
+			v.setX(fmod(m_rand(),m_maxAsteroidSpeed));
+			v.setY(fmod(m_rand(),m_maxAsteroidSpeed));
+			//printf("x: %f y:%f\n", v.getX(), v.getY());
+			float xPos = m_rand() % SCREEN_SIZE_X;
+			float yPos = m_rand() % SCREEN_SIZE_Y;
+			float rotation = fmod(m_rand(), PI);
+			float rotationRate = fmod(m_rand(), m_maxAsteroidRoationRate);
+			std::shared_ptr<GameObject> newAsteroid = std::make_shared<Asteroid>(v ,xPos ,yPos ,rotation,rotationRate, randFilename.c_str());
+			Utils::addGameObject(newAsteroid);
+			//puts(randFilename.c_str());
+		}
 	}
 }
 
@@ -68,4 +72,16 @@ void AsteroidFactory::loadAsteroidValues()
 	m_asteroidSpawnChance = Utils::getFloatFromStringWPrefix(asteroidInfo, "asteroidSpawnChance=");
 	m_maxAsteroids = Utils::getIntFromStringWPreFix(asteroidInfo, "maxAsteroids=");
 	m_maxAsteroidSpeed = Utils::getFloatFromStringWPrefix(asteroidInfo, "maxAsteroidSpeed=");
+	m_maxAsteroidRoationRate = Utils::getFloatFromStringWPrefix(asteroidInfo, "maxRotationRate=");
 }
+
+
+#if _WIN32
+#pragma warning(disable: 4100)
+#endif
+void AsteroidFactory::hitBy(const GameObject * other)
+{
+}
+#if _WIN32
+#pragma warning(default: 4100)
+#endif

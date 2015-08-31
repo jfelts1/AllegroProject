@@ -2,3 +2,14 @@
 asteroidSpawnChance = 0.05
 maxAsteroids = 10
 maxAsteroidSpeed = 5
+maxRotationRate = 0.15708
+
+[Ship]
+maxShipSpeed = 10
+shipAcelleration = 1
+shipHeight = 30
+shipWidth = 20
+
+[Projectile]
+maxLifetime = 20
+speed = 50

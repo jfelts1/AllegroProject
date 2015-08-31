@@ -18,6 +18,8 @@ ALLEGRO_EVENT_QUEUE* events = nullptr;
 ALLEGRO_EVENT_SOURCE* mouseEventSource = nullptr;
 ALLEGRO_EVENT_SOURCE* keyboardEventSource = nullptr;
 
+int asteroidCount;
+
 
 bool initGameWorld()
 {
@@ -83,6 +85,8 @@ bool initGameWorld()
 		return false;
 	}
 
+	asteroidCount = 0;
+
 	return true;
 }
 
@@ -93,7 +97,7 @@ void runGame()
 	keyboardEventSource = al_get_keyboard_event_source();
 	al_register_event_source(events, mouseEventSource);
 	al_register_event_source(events, keyboardEventSource);
-	GameObjects.push_back(make_shared<Ship>(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2));
+	GameObjects.push_back(make_shared<Ship>(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2,Player));
 	shared_ptr<GameObject> tmp = GameObjects[0];
 	player = std::static_pointer_cast<Ship>(tmp);
 	GameObjects.push_back(make_shared<AsteroidFactory>());

@@ -14,11 +14,9 @@ extern std::vector<std::shared_ptr<GameObject>> GameObjectsToAdd;
 
 namespace Utils
 {
-	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, std::shared_ptr<Ship> player);
+	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, std::shared_ptr<::Ship> player);
 	void updateGameState();
 	void renderGameState();
 	void addGameObject(std::shared_ptr<GameObject> obj);
 }
-
-
 #endif

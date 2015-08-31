@@ -22,6 +22,12 @@ namespace Utils
 			UtilHelperFunctions::moveIFStreamToTag(astTag, fin);
 			ret = UtilHelperFunctions::readUntilNextTagOrEOF(fin);
 		}
+		else if (tag == Ship)
+		{
+			char shipTag[] = "[Ship]";
+			UtilHelperFunctions::moveIFStreamToTag(shipTag, fin);
+			ret = UtilHelperFunctions::readUntilNextTagOrEOF(fin);
+		}
 		else
 		{
 			std::cerr << "Tag not found!" << std::endl;

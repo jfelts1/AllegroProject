@@ -24,9 +24,6 @@
     <ClCompile Include="GameObjectTypes\Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectTypes\Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Keybinds.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,6 +54,9 @@
     <ClCompile Include="Utils\StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\PhysicsUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\test.bmp">
@@ -77,15 +77,15 @@
     <Image Include="Images\Asteroids\Asteroid5.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Images\Null.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObjectTypes\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectTypes\Ship.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectTypes\Test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
@@ -125,6 +125,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\StringUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\PhysicsUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

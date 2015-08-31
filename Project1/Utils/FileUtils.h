@@ -12,7 +12,9 @@ namespace Utils
 {
 	enum gameConstsTags
 	{
-		Asteroids
+		Asteroids,
+		Ship,
+		Projectile
 	};
 	std::string getGameConstsTagInfo(gameConstsTags tag);
 

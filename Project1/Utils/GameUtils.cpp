@@ -15,7 +15,7 @@ namespace Utils
 {
 	bool enableDebugRendering = true;
 
-	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, shared_ptr<Ship> player)
+	bool getUserInput(ALLEGRO_EVENT_QUEUE* events, shared_ptr<::Ship> player)
 	{
 		static bool forMovementKeyHeld;
 		static bool backMovementKeyHeld;
@@ -37,7 +37,7 @@ namespace Utils
 				if (mouseEvent.button & 1)
 				{
 					//printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
-					shared_ptr<Projectile> proj = player->fireProj();
+					shared_ptr<::Projectile> proj = player->fireProj();
 					GameObjects.push_back(proj);
 				}
 			}
@@ -81,7 +81,7 @@ namespace Utils
 
 			if (forMovementKeyHeld)
 			{
-				player->moveFor();
+				player->moveForward();
 			}
 			if (backMovementKeyHeld)
 			{
@@ -139,9 +139,10 @@ namespace Utils
 			i++;
 		}
 
-		for (auto rem : objectsToRemove)
+		//reverse iterator since erase invalidates things after the deleted element
+		for (auto beg = objectsToRemove.rbegin(), end = objectsToRemove.rend();beg != end;++beg)
 		{
-			GameObjects.erase(GameObjects.begin() + rem);
+			GameObjects.erase(GameObjects.begin() + *beg);
 		}
 		objectsToRemove.clear();
 	}

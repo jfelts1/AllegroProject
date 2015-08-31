@@ -16,16 +16,12 @@
 #include "../ColorDefines.h"
 #include "../Keybinds.h"
 #include "Projectile.h"
-#define SHIP_HEIGHT 30
-#define SHIP_WIDTH 20
 #define P1X trans1.m[0][0]
 #define P1Y trans1.m[0][1]
 #define P2X trans2.m[0][0]
 #define P2Y trans2.m[0][1]
 #define P3X trans3.m[0][0]
 #define P3Y trans3.m[0][1]
-#define MAX_SHIP_SPEED 10
-#define SHIP_ACELLERATION 1
 
 extern int MOVE_FORWARD;
 extern int MOVE_LEFT;
@@ -38,14 +34,15 @@ class Ship
 public:
 	Ship(float x = 0, float y = 0, float rotation = 0) :GameObject(x,y,rotation)
 	{
+		loadShipConsts();
 		p1.x = pos.x;
-		p1.y = pos.y - (SHIP_HEIGHT / 2);
+		p1.y = pos.y - (m_shipHeight / 2);
 
-		p2.x = pos.x - (SHIP_WIDTH / 2);
-		p2.y = pos.y + (SHIP_HEIGHT / 2);
+		p2.x = pos.x - (m_shipWidth / 2);
+		p2.y = pos.y + (m_shipHeight / 2);
 
-		p3.x = pos.x + (SHIP_WIDTH / 2);
-		p3.y = pos.y + (SHIP_HEIGHT / 2);
+		p3.x = pos.x + (m_shipWidth / 2);
+		p3.y = pos.y + (m_shipHeight / 2);
 
 		initTransforms(orig1,orig2,orig3);
 		initTransforms(trans1, trans2, trans3);
@@ -56,11 +53,35 @@ public:
 
 		transformRotatedShipPointsToWorldCoords();
 
-		firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
+		m_firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
+		m_collisionRadius = (m_shipHeight + m_shipWidth) / 2;
 	}
 
 	Ship(Point p, float rotation = 0) : GameObject(p,rotation)
 	{
+		loadShipConsts();
+		p1.x = pos.x;
+		p1.y = pos.y - (m_shipHeight / 2);
+
+		p2.x = pos.x - (m_shipWidth / 2);
+		p2.y = pos.y + (m_shipHeight / 2);
+
+		p3.x = pos.x + (m_shipWidth / 2);
+		p3.y = pos.y + (m_shipHeight / 2);
+
+		initTransforms(orig1, orig2, orig3);
+		initTransforms(trans1, trans2, trans3);
+
+		al_rotate_transform(&trans1, rotation);
+		al_rotate_transform(&trans2, rotation);
+		al_rotate_transform(&trans3, rotation);
+
+		transformRotatedShipPointsToWorldCoords();
+
+		m_firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
+		m_deathSound = al_load_sample("Sounds/Explosion.wav");
+
+		m_collisionRadius = (m_shipHeight + m_shipWidth) / 2;
 	}
 	virtual ~Ship() {}
 
@@ -95,7 +116,7 @@ public:
 	}
 
 	void setRotationTarget(Point p);
-	void moveFor();
+	void moveForward();
 	void moveBack();
 	void moveLeft();
 	void moveRight();
@@ -110,7 +131,8 @@ public:
 	virtual void render() const override;
 	// Inherited via GameObject
 	virtual void debugRender() const override;
-
+	// Inherited via GameObject
+	virtual void hitBy(const GameObject * other) override;
 private:
 	ALLEGRO_TRANSFORM trans1;
 	ALLEGRO_TRANSFORM trans2;
@@ -122,7 +144,14 @@ private:
 	Point p1, p2, p3;
 	//position to rotate towards
 	Point m_mousePos;
-	ALLEGRO_SAMPLE* firingSound = nullptr;
+	ALLEGRO_SAMPLE* m_firingSound = nullptr;
+	ALLEGRO_SAMPLE* m_deathSound = nullptr;
+	bool m_collided = false;
+
+	float m_shipHeight = 30.0f;
+	float m_shipWidth = 20.0f;
+	float m_maxShipSpeed = 10.0f;
+	float m_shipAcceleration = 1.0f;
 
 	inline void initTransforms(ALLEGRO_TRANSFORM& t1, ALLEGRO_TRANSFORM& t2, ALLEGRO_TRANSFORM& t3)
 	{
@@ -147,5 +176,7 @@ private:
 		p3.x = P3X + pos.x;
 		p3.y = P3Y + pos.y;
 	}
+
+	void loadShipConsts();
 };
 #endif

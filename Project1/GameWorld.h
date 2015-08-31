@@ -24,6 +24,7 @@
 
 extern std::vector<std::shared_ptr<GameObject>> GameObjects;
 extern std::vector<std::shared_ptr<GameObject>> GameObjectsToAdd;
+extern int asteroidCount;
 
 bool initGameWorld();
 void runGame();

@@ -12,16 +12,14 @@ class Projectile :
 	public GameObject
 {
 public:
-	Projectile(float x = 0, float y = 0, float rotation = 0) :GameObject(x, y, rotation)
+	Projectile(float x = 0, float y = 0, float rotation = 0,Owner own = Player) :GameObject(x, y, rotation,own)
 	{
-		m_vect.setY(m_vect.getY() - SPEED*sin(m_rotation + PI / 2));
-		m_vect.setX(m_vect.getX() - SPEED*cos(m_rotation + PI / 2));
+		Utils::moveForward(m_vect, SPEED, m_rotation);
 	}
 
-	Projectile(Point p, float rotation = 0) :GameObject(p, rotation)
+	Projectile(Point p, float rotation = 0,Owner own = Player) :GameObject(p, rotation,own)
 	{
-		m_vect.setY(m_vect.getY() - SPEED*sin(m_rotation + PI / 2));
-		m_vect.setX(m_vect.getX() - SPEED*cos(m_rotation + PI / 2));
+		Utils::moveForward(m_vect, SPEED, m_rotation);
 	}
 
 	virtual ~Projectile() { printf("projectile destroyed lifetime was: %i\n",m_lifetime); }
@@ -34,7 +32,9 @@ public:
 	virtual void debugRender() const override;
 private:
 	int m_lifetime = 0;
+	bool m_hit = false;
 
-	
+	// Inherited via GameObject
+	virtual void hitBy(const GameObject * other) override;
 };
 #endif

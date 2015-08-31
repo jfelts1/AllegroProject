@@ -17,6 +17,8 @@
 #include "GameObject.h"
 #include "Asteroid.h"
 
+extern int asteroidCount;
+
 class AsteroidFactory :
 	public GameObject
 {
@@ -40,8 +42,12 @@ private:
 	float m_asteroidSpawnChance = 0.05f;
 	int m_maxAsteroids = 10;
 	float m_maxAsteroidSpeed = 5.0f;
+	float m_maxAsteroidRoationRate = 0.15707963267948966192313216916398f;
 
 	void loadAsteroidSpriteFiles();
 	void loadAsteroidValues();
+
+	// Inherited via GameObject
+	virtual void hitBy(const GameObject * other) override;
 };
 #endif
