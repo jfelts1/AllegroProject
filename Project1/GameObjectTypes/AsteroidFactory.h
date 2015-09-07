@@ -27,6 +27,8 @@ public:
 	{
 		loadAsteroidSpriteFiles();
 		loadAsteroidValues();
+		std::random_device trueRand;
+		m_rand.seed(trueRand());
 	}
 	virtual ~AsteroidFactory() {}
 

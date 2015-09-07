@@ -34,54 +34,12 @@ class Ship
 public:
 	Ship(float x = 0, float y = 0, float rotation = 0) :GameObject(x,y,rotation)
 	{
-		loadShipConsts();
-		p1.x = pos.x;
-		p1.y = pos.y - (m_shipHeight / 2);
-
-		p2.x = pos.x - (m_shipWidth / 2);
-		p2.y = pos.y + (m_shipHeight / 2);
-
-		p3.x = pos.x + (m_shipWidth / 2);
-		p3.y = pos.y + (m_shipHeight / 2);
-
-		initTransforms(orig1,orig2,orig3);
-		initTransforms(trans1, trans2, trans3);
-
-		al_rotate_transform(&trans1, rotation);
-		al_rotate_transform(&trans2, rotation);
-		al_rotate_transform(&trans3, rotation);
-
-		transformRotatedShipPointsToWorldCoords();
-
-		m_firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
-		m_collisionRadius = (m_shipHeight + m_shipWidth) / 2;
+		initShip(rotation);
 	}
 
 	Ship(Point p, float rotation = 0) : GameObject(p,rotation)
 	{
-		loadShipConsts();
-		p1.x = pos.x;
-		p1.y = pos.y - (m_shipHeight / 2);
-
-		p2.x = pos.x - (m_shipWidth / 2);
-		p2.y = pos.y + (m_shipHeight / 2);
-
-		p3.x = pos.x + (m_shipWidth / 2);
-		p3.y = pos.y + (m_shipHeight / 2);
-
-		initTransforms(orig1, orig2, orig3);
-		initTransforms(trans1, trans2, trans3);
-
-		al_rotate_transform(&trans1, rotation);
-		al_rotate_transform(&trans2, rotation);
-		al_rotate_transform(&trans3, rotation);
-
-		transformRotatedShipPointsToWorldCoords();
-
-		m_firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
-		m_deathSound = al_load_sample("Sounds/Explosion.wav");
-
-		m_collisionRadius = (m_shipHeight + m_shipWidth) / 2;
+		initShip(rotation);
 	}
 	virtual ~Ship() {}
 
@@ -153,6 +111,13 @@ private:
 	float m_maxShipSpeed = 10.0f;
 	float m_shipAcceleration = 1.0f;
 
+	//these are here for efficiency reasons
+	//prevents having to go load in these values from disk at the creation of every projectile
+	int m_projMaxLifetime = 20;
+	float m_projSpeed = 50.0f;
+
+	void initShip(float rotation);
+
 	inline void initTransforms(ALLEGRO_TRANSFORM& t1, ALLEGRO_TRANSFORM& t2, ALLEGRO_TRANSFORM& t3)
 	{
 		t1.m[0][0] = p1.x - pos.x;
@@ -178,5 +143,6 @@ private:
 	}
 
 	void loadShipConsts();
+	void loadProjConsts();
 };
 #endif

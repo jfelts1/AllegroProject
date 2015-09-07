@@ -9,7 +9,9 @@
 #include <string>
 #include <cmath>
 #include <cstdlib>
+#include <cstdio>
 #include <vector>
+#include <typeinfo>
 #include "../Utils/SpriteUtils.h"
 #include "../Utils/ScreenUtils.h"
 #include "../Utils/PhysicsUtils.h"

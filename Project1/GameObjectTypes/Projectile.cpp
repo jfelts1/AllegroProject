@@ -1,5 +1,7 @@
 #include "Projectile.h"
 
+extern int asteroidsDestroyed;
+
 void Projectile::updateHook()
 {
 	pos = pos + m_vect;
@@ -22,6 +24,8 @@ void Projectile::debugRender() const
 void Projectile::hitBy(const GameObject * other)
 {
 	m_hit = true;
+	//a projectile being hit is the same as the projectile hitting an asteroid since projectiles can't hit the player
+	asteroidsDestroyed++;
 }
 #if _WIN32
 #pragma warning(default: 4100)
@@ -33,7 +37,7 @@ bool Projectile::destroyCondition()
 	{
 		return true;
 	}
-	if (m_lifetime >= MAX_LIFETIME)
+	if (m_lifetime >= m_maxLifetime)
 	{
 		return true;
 	}

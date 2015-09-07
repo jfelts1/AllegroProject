@@ -28,6 +28,12 @@ namespace Utils
 			UtilHelperFunctions::moveIFStreamToTag(shipTag, fin);
 			ret = UtilHelperFunctions::readUntilNextTagOrEOF(fin);
 		}
+		else if (tag == Projectile)
+		{
+			char projTag[] = "[Projectile]";
+			UtilHelperFunctions::moveIFStreamToTag(projTag, fin);
+			ret = UtilHelperFunctions::readUntilNextTagOrEOF(fin);
+		}
 		else
 		{
 			std::cerr << "Tag not found!" << std::endl;

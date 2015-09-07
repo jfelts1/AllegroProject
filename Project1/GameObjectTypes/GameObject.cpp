@@ -35,7 +35,7 @@ GameObject::GameObject(const GameObject & orig)
 }
 
 //copy assignment
-GameObject & GameObject::operator=(const GameObject & orig)
+GameObject & GameObject::operator=(const GameObject& orig)
 {
 	if (&orig != this)
 	{
@@ -59,12 +59,14 @@ void GameObject::update()
 	Utils::screenWrap(pos);
 }
 
-bool GameObject::collisionCheck(const GameObject * other)
+bool GameObject::collisionCheck(const GameObject* other)
 {
 	if (this != other)
 	{
 		if (hypotf(this->getX() - other->getX(), this->getY() - other->getY()) < this->getCollisionRadius())
 		{
+			//std::cout <<typeid(*this).name()<<" collided with "<<typeid(*other).name()<< std::endl;
+			printf("%s(%.1f,%.1f) collided with %s(%.1f,%.1f)\n", typeid(*this).name(),this->getX(),this->getY(), typeid(*other).name(),other->getX(),other->getY());
 			return true;
 		}
 	}

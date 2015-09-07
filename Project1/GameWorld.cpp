@@ -10,7 +10,7 @@ using std::make_shared;
 
 vector<shared_ptr<GameObject>> GameObjects;
 vector<shared_ptr<GameObject>> GameObjectsToAdd;
-shared_ptr<Ship> player;
+
 
 ALLEGRO_DISPLAY* display = nullptr;
 ALLEGRO_EVENT_QUEUE* events = nullptr;
@@ -19,7 +19,7 @@ ALLEGRO_EVENT_SOURCE* mouseEventSource = nullptr;
 ALLEGRO_EVENT_SOURCE* keyboardEventSource = nullptr;
 
 int asteroidCount;
-
+int asteroidsDestroyed;
 
 bool initGameWorld()
 {
@@ -84,23 +84,37 @@ bool initGameWorld()
 		fprintf(stderr, "no keyboard found!\n");
 		return false;
 	}
+	if(!al_init_font_addon())
+	{
+		fprintf(stderr, "unable to init fonts\n");
+		return false;
+	}
+	if (!al_init_ttf_addon())
+	{
+		fprintf(stderr, "unable to init ttf fonts\n");
+		return false;
+	}
 
 	asteroidCount = 0;
-
+	asteroidsDestroyed = 0;
 	return true;
 }
 
 void runGame()
 {
+	shared_ptr<Ship> player;
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	mouseEventSource = al_get_mouse_event_source();
 	keyboardEventSource = al_get_keyboard_event_source();
 	al_register_event_source(events, mouseEventSource);
 	al_register_event_source(events, keyboardEventSource);
-	GameObjects.push_back(make_shared<Ship>(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2,Player));
-	shared_ptr<GameObject> tmp = GameObjects[0];
-	player = std::static_pointer_cast<Ship>(tmp);
+
+	player = make_shared<Ship>(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2, Player);
+	GameObjects.push_back(player);
 	GameObjects.push_back(make_shared<AsteroidFactory>());
+
+	Ui ui;
+
 	bool quit = false;
 	//main game loop
 	while (!quit)
@@ -110,19 +124,18 @@ void runGame()
 #if TRACK_TICK_TIMES == 1
 		auto startInputUpdateTime = high_resolution_clock::now();
 #endif
-		//add new GameObjects at the start of the gametick
+		quit = Utils::getUserInput(events,player);
 		for (auto obj : GameObjectsToAdd)
 		{
 			GameObjects.push_back(obj);
 		}
 		GameObjectsToAdd.clear();
-		quit = Utils::getUserInput(events,player);
 		Utils::updateGameState();
 #if TRACK_TICK_TIMES == 1
 		auto endInputUpdateTime = high_resolution_clock::now();
 		auto startRenderTime = high_resolution_clock::now();
 #endif
-		Utils::renderGameState();
+		Utils::renderGameState(ui);
 #if TRACK_TICK_TIMES == 1
 		auto endRenderTime = high_resolution_clock::now();
 #endif
@@ -137,8 +150,6 @@ void runGame()
 #endif
 		std::this_thread::sleep_for(std::chrono::milliseconds(MS_PER_TICK - gameTickTime));
 	}
-
-	
 }
 
 void shutdownGameWorld()
@@ -153,6 +164,8 @@ void shutdownGameWorld()
 	al_destroy_event_queue(events);
 	al_shutdown_image_addon();
 	al_shutdown_primitives_addon();
+	al_shutdown_ttf_addon();
+	al_shutdown_font_addon();
 	al_uninstall_audio();
 	al_uninstall_keyboard();
 	al_uninstall_mouse();

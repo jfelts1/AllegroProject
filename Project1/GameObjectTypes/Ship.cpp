@@ -51,7 +51,7 @@ void Ship::moveRight()
 std::shared_ptr<Projectile> Ship::fireProj()
 {
 	al_play_sample(m_firingSound, .5, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
-	return std::make_shared<Projectile>(p1 ,m_rotation,Player);
+	return std::make_shared<Projectile>(m_projMaxLifetime,m_projSpeed, p1 ,m_rotation,Player);
 }
 
 void Ship::updateHook()
@@ -89,6 +89,34 @@ void Ship::debugRender() const
 	al_draw_filled_rectangle(pos.x + 1, pos.y + 1, pos.x - 1, pos.y - 1, RED);
 }
 
+void Ship::initShip(float rotation)
+{
+	loadShipConsts();
+	loadProjConsts();
+	p1.x = pos.x;
+	p1.y = pos.y - (m_shipHeight / 2);
+
+	p2.x = pos.x - (m_shipWidth / 2);
+	p2.y = pos.y + (m_shipHeight / 2);
+
+	p3.x = pos.x + (m_shipWidth / 2);
+	p3.y = pos.y + (m_shipHeight / 2);
+
+	initTransforms(orig1, orig2, orig3);
+	initTransforms(trans1, trans2, trans3);
+
+	al_rotate_transform(&trans1, rotation);
+	al_rotate_transform(&trans2, rotation);
+	al_rotate_transform(&trans3, rotation);
+
+	transformRotatedShipPointsToWorldCoords();
+
+	m_firingSound = al_load_sample("Sounds/Laser_Shoot2.wav");
+	m_deathSound = al_load_sample("Sounds/Explosion.wav");
+
+	m_collisionRadius = (m_shipHeight + m_shipWidth) / 2;
+}
+
 void Ship::loadShipConsts()
 {
 	std::string shipInfo = Utils::getGameConstsTagInfo(Utils::Ship);
@@ -97,6 +125,14 @@ void Ship::loadShipConsts()
 	m_shipWidth = Utils::getFloatFromStringWPrefix(shipInfo, "shipWidth=");
 	m_maxShipSpeed = Utils::getFloatFromStringWPrefix(shipInfo, "maxShipSpeed=");
 	m_shipAcceleration = Utils::getFloatFromStringWPrefix(shipInfo, "shipAcelleration=");
+}
+
+void Ship::loadProjConsts()
+{
+	std::string projInfo = Utils::getGameConstsTagInfo(Utils::Projectile);
+	std::cout << projInfo << std::endl;
+	m_projMaxLifetime = Utils::getIntFromStringWPreFix(projInfo, "maxLifetime=");
+	m_projSpeed = Utils::getFloatFromStringWPrefix(projInfo, "speed=");
 }
 
 void Ship::hitBy(const GameObject * other)
@@ -111,7 +147,7 @@ bool Ship::destroyCondition()
 {
 	if (m_collided == true)
 	{
-		//al_play_sample(m_deathSound, .5, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+		al_play_sample(m_deathSound, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
 		return true;
 	}
 	return false;

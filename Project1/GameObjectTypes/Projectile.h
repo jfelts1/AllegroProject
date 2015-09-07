@@ -6,20 +6,23 @@
 #include "GameObject.h"
 #include "../Point.h"
 #include "../ColorDefines.h"
-#define MAX_LIFETIME 20
-#define SPEED 50
+
 class Projectile :
 	public GameObject
 {
 public:
-	Projectile(float x = 0, float y = 0, float rotation = 0,Owner own = Player) :GameObject(x, y, rotation,own)
+	Projectile(int maxLifetime, float speed,float x = 0, float y = 0, float rotation = 0,Owner own = Player) :GameObject(x, y, rotation,own)
 	{
-		Utils::moveForward(m_vect, SPEED, m_rotation);
+		m_maxLifetime = maxLifetime;
+		m_speed = speed;
+		Utils::moveForward(m_vect, m_speed, m_rotation);
 	}
 
-	Projectile(Point p, float rotation = 0,Owner own = Player) :GameObject(p, rotation,own)
+	Projectile(int maxLifetime, float speed, Point p, float rotation = 0,Owner own = Player) :GameObject(p, rotation,own)
 	{
-		Utils::moveForward(m_vect, SPEED, m_rotation);
+		m_maxLifetime = maxLifetime;
+		m_speed = speed;
+		Utils::moveForward(m_vect, m_speed, m_rotation);
 	}
 
 	virtual ~Projectile() { printf("projectile destroyed lifetime was: %i\n",m_lifetime); }
@@ -33,6 +36,8 @@ public:
 private:
 	int m_lifetime = 0;
 	bool m_hit = false;
+	float m_speed;
+	int m_maxLifetime;
 
 	// Inherited via GameObject
 	virtual void hitBy(const GameObject * other) override;

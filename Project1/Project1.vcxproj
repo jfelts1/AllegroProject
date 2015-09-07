@@ -139,6 +139,7 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Keybinds.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Ui.cpp" />
     <ClCompile Include="Utils\FileUtils.cpp" />
     <ClCompile Include="Utils\GameUtils.cpp" />
     <ClCompile Include="Utils\PhysicsUtils.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="GameWorld.h" />
     <ClInclude Include="Keybinds.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Ui.h" />
     <ClInclude Include="Utils\FileUtils.h" />
     <ClInclude Include="Utils\GameUtils.h" />
     <ClInclude Include="Utils\PhysicsUtils.h" />

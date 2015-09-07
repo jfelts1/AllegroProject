@@ -38,7 +38,7 @@ namespace Utils
 				{
 					//printf("mouse click at x: %d y: %d\n", mouseEvent.x, mouseEvent.y);
 					shared_ptr<::Projectile> proj = player->fireProj();
-					GameObjects.push_back(proj);
+					addGameObject(proj);
 				}
 			}
 			//mouse was moved
@@ -78,7 +78,7 @@ namespace Utils
 					enableDebugRendering = !enableDebugRendering;
 				}
 			}
-
+			//player ship movement
 			if (forMovementKeyHeld)
 			{
 				player->moveForward();
@@ -142,12 +142,13 @@ namespace Utils
 		//reverse iterator since erase invalidates things after the deleted element
 		for (auto beg = objectsToRemove.rbegin(), end = objectsToRemove.rend();beg != end;++beg)
 		{
+			//std::cout << *beg << std::endl;
 			GameObjects.erase(GameObjects.begin() + *beg);
 		}
 		objectsToRemove.clear();
 	}
 
-	void renderGameState()
+	void renderGameState(Ui& ui)
 	{
 		//clear existing frame
 		al_clear_to_color(BLACK);
@@ -160,6 +161,7 @@ namespace Utils
 				GameObjsToRender->debugRender();
 			}
 		}
+		ui.render();
 		al_flip_display();
 	}
 

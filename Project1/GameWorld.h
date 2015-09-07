@@ -19,12 +19,14 @@
 #include "Utils/GameUtils.h"
 #include "ColorDefines.h"
 #include "Point.h"
+#include "Ui.h"
 #define MS_PER_TICK 16
 #define TRACK_TICK_TIMES 0
 
 extern std::vector<std::shared_ptr<GameObject>> GameObjects;
 extern std::vector<std::shared_ptr<GameObject>> GameObjectsToAdd;
 extern int asteroidCount;
+extern int asteroidsDestroyed;
 
 bool initGameWorld();
 void runGame();
